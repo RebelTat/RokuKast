@@ -52,12 +52,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 jobs:
-   Analysis:
-      name: Analyze with SonarCloud
-        runs-on: ubuntu-latest
-        steps:
-           - uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049    
-        
+  Analysis:
+    name: Analyze with SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049    
         with: # Additional arguments for the sonarcloud scanner    
           args:  # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
             -Dsonar.projectKey=RebelTat_RokuKast
