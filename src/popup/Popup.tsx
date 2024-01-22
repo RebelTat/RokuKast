@@ -38,7 +38,8 @@ export const Popup = (props: IAppProps) => {
                       key={`${index}-download`}
                       href={video.url}
                       title="Download"
-                      target="_blank"
+                      target="_blank" 
+                      rel="noopener noreferrer"
                     >
                       <i className="material-icons">file_download</i>
                     </a>
