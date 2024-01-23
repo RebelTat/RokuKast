@@ -9,10 +9,11 @@ updates:
   - package-ecosystem: "yarn" 
     directory: "/" # Location of package manifests
     schedule:
-      interval: "weekly"
+       interval: "weekly"
     # Raise pull requests for version updates
     # to yarn against the `main` branch
-    target-branch: "main"
+       day: "sunday"
+    target-branch: "master"
     # Labels on pull requests for version updates only
     labels:
       - "yarn dependencies"
@@ -30,3 +31,19 @@ updates:
    labels:
       - "github-actions"
 
+  # Maintain dependencies for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+       - "npm dependencies"
+
+  # Maintain dependencies for Composer
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    labels:
+       - "composer dependencies"
