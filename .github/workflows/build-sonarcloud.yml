@@ -26,21 +26,20 @@
 # Feel free to take a look at our documentation (https://docs.sonarcloud.io/getting-started/github/)
 # or reach out to our community forum if you need some help (https://community.sonarsource.com/c/help/sc/9)
 
-name: SonarCloud analysis
 
 on:
+  # Trigger analysis when pushing in master or pull requests, and when creating a pull request.
   push:
-    branches: [ "master" ]
+    branches:
+      - master
   pull_request:
-    branches: [ "master" ]
-  workflow_dispatch:
-
+      types: [opened, synchronize, reopened]
+name: Main Workflow
 permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
-
 jobs:
   sonarcloud:
-    name: SonarCloud
+    name: SonarCloud   
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -49,22 +48,23 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.SONAR_TOKEN_GITHUB }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   Analysis:
     name: Analyze with SonarCloud
     runs-on: ubuntu-latest
-    steps:
-      - uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
-        with:                                       
-          args:                                     # Additional sonarcloud scanner arguments   
-            -Dsonar.projectKey=RebelTat_RokuKast    # Unique project key.
-            -Dsonar.organization=rebeltat           # Unique organization key.
-            -Dsonar.verbose=true                    # default is false                                   
-            -Dsonar.sources= /, /src/               # Comma-separated paths to source files directories.
-            -Dsonar.projectBaseDir= .               # analysis alt. directory instead of launching directory. 
-            #-Dsonar.tests=                # optional, Comma-separated paths to test source files directories. 
+     - name: SonarCloud Analysis
+       uses: sonarsource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
+       with:
+         projectBaseDir: my-custom-directory
+         args: >
+           -Dsonar.organization=rebeltat           # Unique organization key.
+           -Dsonar.projectKey=RebelTat_RokuKast    # Unique project key.sonar.projectKey=my-projectkey
+           -Dsonar.sources= /, src/                # lib/, Comma-separated paths to source files directories.
+           -Dsonar.verbose=true                    # default is false      
+          #-Dsonar.python.coverage.reportPaths=coverage.xml
+          #-Dsonar.test.exclusions=tests/**
+          #-Dsonar.tests=                          # tests/,  Comma-separated paths to test source directories. 
                                            # https://docs.sonarcloud.io/enriching/test-coverage/overview/
-               
              
