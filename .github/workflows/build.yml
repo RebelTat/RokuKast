@@ -31,6 +31,8 @@ on:
     branches: [ "master" ]
   pull_request:
     types: [opened, synchronize, reopened]
+permissions:
+  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 jobs:
   sonarcloud:
     name: SonarCloud
@@ -42,7 +44,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.SONAR_TOKEN_GITHUB }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   Analysis:
@@ -51,13 +53,14 @@ jobs:
     steps:
       - uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049    
         with: # Additional arguments for the sonarcloud scanner    
-          args:  # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
-            -Dsonar.projectKey=RebelTat_RokuKast
-            -Dsonar.organization=rebeltat
-            -Dsonar.verbose=true # optional, default is false
-            -Dsonar.sources=/src/
-            # Comma-separated paths to directories containing main source files.
-            # When you need the analysis to take place in a directory other than the one from which it was launched
-            -Dsonar.projectBaseDir=.
-            # Comma-separated paths to directories containing test source files.
-            #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
+          projectBaseDir: my-custom-directory
+          args: >                                             # Additional sonarcloud scanner arguments   
+             -Dsonar.projectKey=RebelTat_RokuKast              # Unique project key.
+             -Dsonar.organization=rebeltat                     # Unique organization key.
+             -Dsonar.verbose=true                              # default is false                                   
+            #-Dsonar.python.coverage.reportPaths=coverage.xml
+             -Dsonar.sources=/, src/,                          # lib/, Comma-separated paths to source files directories.
+             -Dsonar.projectBaseDir=.                          # analysis alt. directory instead of launching directory. 
+            #-Dsonar.test.exclusions=tests/**
+            #-Dsonar.tests=                                    # tests/, Comma-separated test source files directories. 
+                                           # https://docs.sonarcloud.io/enriching/test-coverage/overview/
