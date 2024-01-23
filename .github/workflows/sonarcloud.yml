@@ -53,13 +53,13 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049                                      
-        with:
-           args:                                     # Additional sonarcloud scanner arguments   
-               -Dsonar.projectKey=RebelTat_RokuKast    # Unique project key.
-               -Dsonar.organization=rebeltat           # Unique organization key.
-               -Dsonar.verbose=true                    # default is false                                   
-               -Dsonar.sources= /, /src/               # Comma-separated paths to source files directories.
-               -Dsonar.projectBaseDir= .               # analysis alt. directory instead of launching directory. 
-              #-Dsonar.tests=                # optional, Comma-separated paths to test source files directories. 
+         env:
+           args: >                                     # Additional sonarcloud scanner arguments   
+             -Dsonar.projectKey=RebelTat_RokuKast    # Unique project key.
+             -Dsonar.organization=rebeltat           # Unique organization key.
+             -Dsonar.verbose=true                    # default is false                                   
+             -Dsonar.sources= /, /src/               # Comma-separated paths to source files directories.
+             -Dsonar.projectBaseDir= .               # analysis alt. directory instead of launching directory. 
+  \          #-Dsonar.tests=                # optional, Comma-separated paths to test source files directories. 
                                            # https://docs.sonarcloud.io/enriching/test-coverage/overview/
  
