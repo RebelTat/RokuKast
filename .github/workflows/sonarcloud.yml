@@ -29,15 +29,14 @@
 name: SonarCloud analysis
 
 on:
-  push:
-    branches: [ "master" ]
+    push:
+    branches:
+      - master
   pull_request:
-    branches: [ "master" ]
-  workflow_dispatch:
-
+      types: [opened, synchronize, reopened]
+name: Main Workflow
 permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
-
 jobs:
   sonarcloud:
     name: SonarCloud
@@ -49,13 +48,13 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.SONAR_TOKEN_GITHUB }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master                                   
         with:
-          projectBaseDir: my-custom-directory
-          args: >                                             # Additional sonarcloud scanner arguments   
+          projectBaseDir:                                      # my-custom-directory
+         args: >                                               # Additional sonarcloud scanner arguments   
              -Dsonar.projectKey=RebelTat_RokuKast              # Unique project key.
              -Dsonar.organization=rebeltat                     # Unique organization key.
              -Dsonar.verbose=true                              # default is false                                   
