@@ -10,10 +10,23 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    # Raise pull requests for version updates
+    # to yarn against the `main` branch
+    target-branch: "main"
+    # Labels on pull requests for version updates only
+    labels:
+      - "yarn dependencies"
 
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
-    # Workflow files stored in the default location of `.github/workflows`. (You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.)
+    # Workflow files stored in the default location of `.github/workflows`. 
+    # (You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.)
     directory: "/"
     schedule:
       interval: "weekly"
+     # Check for github-actions updates on Mon, Wed, and Fri
+     day: [ "monday", "wednesday", "friday" ]
+   # Labels on pull requests for security and version updates
+   labels:
+      - "github-actions"
+
